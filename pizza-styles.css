@@ -1,0 +1,57 @@
+body {
+    background-color: darkred;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+main {
+    background-color: white;
+    width: 70%;
+    margin: 0 auto 1rem auto;
+    padding: 0 1rem 2rem 1rem;
+}
+
+header {
+    background-color: lightgrey;
+    padding: 2rem 1rem;
+}
+
+header h1{
+    color: darkgreen;
+    font-size: 3.5rem;
+    margin: 0;
+}
+
+header img {
+    float: right;
+    max-width: 200px;
+}
+
+#contact-button {
+    color: white;
+    background-color: darkgreen;
+    border-radius: .25rem;
+    padding: .5rem 1.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+}
+
+#tagline {
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+fieldset {
+    border: 1px solid darkgreen;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+legend {
+    color: darkgreen;
+    font-variant: small-caps;
+    font-size: 1.5rem;
+    padding-left: 1rem;
+    width: 100%;
+}
