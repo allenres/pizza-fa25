@@ -31,6 +31,31 @@
                 <label for="usr-email">Email address:</label>
                 <input type="usr-email" id="usr-email" name="usr-email">
             </fieldset>
+
+            <fieldset>
+                <legend>Select Pickup or Delivery</legend>
+                <label for="pickup"><input type="radio" id="pickup" name="method" value="pickup">Pickup</label>
+                <label for="delivery"><input type="radio" id="delivery" name="method" value="delivery">Delivery</label>
+            </fieldset>
+
+            
+            <fieldset>
+                <legend>Select Topping</legend>
+                <label for="pepporoni"><input type="checkbox" id="pepporoni" name="toppings[]" value="pickup">Pepporoni</label>
+                <label for="cheeze"><input type="checkbox" id="cheeze" name="toppings[]" value="cheeze">cheeze</label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Pizza Size</legend>
+                <select id="size" name="size">
+                    <option value="none">-- Select a Size --</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </fieldset>
+
+            <button type="submit">Place Order</button>
         </form>
     </main>
 </body>
