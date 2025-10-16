@@ -93,6 +93,12 @@ label {
     padding-bottom: .5rem;
 }
 
+.error {
+    color: darkred;
+    font-weight: bold;
+    display: none;
+}
+
 /* Mobile styles */
 @media (max-width: 480px) {
     #main {
