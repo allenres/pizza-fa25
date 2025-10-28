@@ -4,6 +4,9 @@ import express from 'express';
 // create an instance of an Express application
 const app = express();
 
+// set EJS as our view engine
+app.set('view engine', 'ejs');
+
 // Enable static file serving (client side file that does not communicate with database)
 app.use(express.static('public'));
 
@@ -21,17 +24,17 @@ const PORT = 3000;
 // res: allows us to send back a response to the client
 app.get('/', (req, res) => {
     // send "Hello, World!" as a response to the client
-    res.sendFile(`${import.meta.dirname}/views/home.html`); // <- cannot have multiple of these
+    res.render('home');
 });
 
 
 // define an "submit-order" route
 app.get('/contact-us', (req, res) => {
-    res.sendFile(`${import.meta.dirname}/views/contact.html`);
+    res.render('contact');
 })
 // define an "submit-order" route
 app.get('/confirmation', (req, res) => {
-    res.sendFile(`${import.meta.dirname}/views/confirmation.html`);
+    res.render('confirmation');
 })
 // define an "submit-order" route
 app.get('/admin-page', (req, res) => {
@@ -53,14 +56,15 @@ app.post('/submit-order', (req, res) => {
         method: req.body.method,
         toppings: req.body.toppings,
         size: req.body.size,
-        comment: req.body.comment
+        comment: req.body.comment,
+        timestamp: new Date()
     };
 
     orders.push(order);
     console.log(orders);
 
     // send user to confirmation page
-    res.sendFile(`${import.meta.dirname}/views/confirmation.html`);
+    res.render('confirmation', {order});
 })
 
 // start the server and make it listen on the port specified above
