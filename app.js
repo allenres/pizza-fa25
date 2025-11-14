@@ -1,5 +1,18 @@
 // import the express module
 import express from 'express';
+import mysql2 from 'mysql2';
+import dotenv from 'dotenv';
+
+// load the variables from the .env file
+dotenv.config();
+
+const pool = mysql2.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+}).promise();
 
 // create an instance of an Express application
 const app = express();
@@ -19,6 +32,16 @@ const orders = [];
 // define the port number where our server will listen
 const PORT = 3000;
 
+// define a route to test database connection
+app.get('/db_test', async(req, res) => {
+    try {
+        const [orders] = await pool.query('SELECT * FROM orders');
+        res.send(orders);
+    } catch (err) {
+        console.error('Database error:', err);
+    }
+});
+
 // define a default "route" ('/') <- root dir
 // req: contains information about the incoming request
 // res: allows us to send back a response to the client
@@ -37,34 +60,49 @@ app.get('/confirmation', (req, res) => {
     res.render('confirmation');
 })
 // define an "submit-order" route
-app.get('/admin-page', (req, res) => {
-    res.send(orders);
+app.get('/admin', async(req, res) => {
+    try {
+        const [orders] = await pool.query('SELECT * FROM orders ORDER BY timestamp DESC');
+
+        res.render('admin', { orders });
+    } catch (err) {
+        console.error('Database error:', err);
+    }
+
+
     //res.sendFile(`${import.meta.dirname}/views/admin.html`);
 })
 
 
 // define an "submit-order" route
-app.post('/submit-order', (req, res) => {
-    //console.log(req.body);
-    //res.sendFile(`${import.meta.dirname}/views/confirmation.html`);
+app.post('/submit-order', async(req, res) => {
 
-    // create a JSON object to store the data
-    const order = {
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.fname.email,
-        method: req.body.method,
-        toppings: req.body.toppings,
-        size: req.body.size,
-        comment: req.body.comment,
-        timestamp: new Date()
-    };
+    try {
+        // create a JSON object to store the data
+        const order = req.body;
+        // convert the toppings array into a comma-seperated string
+        order.toppings = Array.isArray(order.toppings) ? order.toppings.join(", ") : "";
+        // add a timstamp
+        order.timestamp = new Date();
 
-    orders.push(order);
-    console.log(orders);
+        const sql = 'INSERT INTO orders (fname, lname, email, size, method, toppings, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const params = [
+            order.fname,
+            order.lname,
+            order.email,
+            order.size,
+            order.method,
+            order.toppings,
+            order.timestamp
+        ];
+        const [result] = await pool.execute(sql, params);
+        // send user to confirmation page
+        res.render('confirmation', {order});
+    } catch (err) {
+        console.error('Error inserting order: ', err);
 
-    // send user to confirmation page
-    res.render('confirmation', {order});
+    }
+
 })
 
 // start the server and make it listen on the port specified above

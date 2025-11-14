@@ -3,9 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/pizza-icon.jpg">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles/pizza-styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
+
+    <script src="pizza.js" defer></script>
+    <script src="//cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
     <title>Document</title>
 </head>
 <body>
-    
+    <main>
+        <header>
+            <img src="images/pizza-guy.jpg" alt="Poppa">
+            <h1>Papa's Pizza</h1>
+            <p id="tagline">The best pizza GRC students have ever tasted!</p>
+            <hr>
+            <p>Poppa’s Pizza serves up fresh, handcrafted pizzas with 
+                bold flavors and a warm, family-friendly vibe.</p>
+            <a id="contact-button" href="/contact-us" role="button">Contact Us</a>
+        </header>
+        <h1>Admin Page</h1>
+        <table id="order-table" class="display">
+
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Email</td>
+                    <td>Method</td>
+                    <td>Toppings</td>
+                    <td>Size</td>
+                    <td>Comment</td>
+                    <td>Date/Time</td>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                <tr>
+                    <td><%= order.fname %> <%= order.lname %></td>
+                    <td><%= order.email %></td>
+                    <td><%= order.method %></td>
+                    <td><%= order.toppings %></td>
+                    <td><%= order.size %></td>
+                    <td><%= order.comment %></td>
+                    <td><%= order.timestamp.toLocaleString() %></td>
+                </tr>
+            </tbody>
+            <% }); %>
+        </table>
+    </main>
+    <script defer> 
+        let table = new DataTable('#order-table') 
+    </script>
 </body>
 </html>
