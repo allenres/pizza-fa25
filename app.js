@@ -2,6 +2,7 @@
 import express from 'express';
 import mysql2 from 'mysql2';
 import dotenv from 'dotenv';
+import { validateForm } from './validation.js';
 
 // load the variables from the .env file
 dotenv.config();
@@ -80,6 +81,13 @@ app.post('/submit-order', async(req, res) => {
     try {
         // create a JSON object to store the data
         const order = req.body;
+
+        // server-side validation
+        const valid = validateForm(order);
+        if (!valid.isValid) {
+            res.render('home', {errors: valid.errors});
+        }
+
         // convert the toppings array into a comma-seperated string
         order.toppings = Array.isArray(order.toppings) ? order.toppings.join(", ") : "";
         // add a timstamp
@@ -100,9 +108,7 @@ app.post('/submit-order', async(req, res) => {
         res.render('confirmation', {order});
     } catch (err) {
         console.error('Error inserting order: ', err);
-
     }
-
 })
 
 // start the server and make it listen on the port specified above
